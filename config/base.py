@@ -7,7 +7,7 @@ class Config:
     MONGODB_SETTINGS = {
         'db': os.environ.get('MONGODB_DB','default'),
         'MONGODB_HOST': os.environ.get('MONGODB_HOST', 'localhost'),
-        'MONGODB_PORT': int(os.environ.get('MONGODB_PORT', '27017')),
+        'MONGODB_PORT': int(os.environ.get('MONGODB_PORT', '27117')),
         'MONGODB_USERNAME': os.environ.get('MONGODB_USERNAME', ''),
         'MONGODB_PASSWORD': os.environ.get('MONGODB_PASSWORD', ''),
         'MONGODB_AUTH_SOURCE': os.environ.get('MONGODB_AUTH_SOURCE', 'admin'),
