@@ -10,7 +10,7 @@ services:
             FLASK_APP: "run.py"
             FLASK_ENV: "production"
             MONGODB_HOST: "mongo"
-            JWT_SECRET_KEY: "prod_jwt_secret_key"
+            JWT_SECRET_KEY: "1qaz2wsx3edc4rfv5tgb"
             JWT_ACCESS_TOKEN_EXPIRES: "3600"
         depends_on:
             - mongo
@@ -18,7 +18,7 @@ services:
         image: mongo:4.4
         environment:
             MONGO_INITDB_ROOT_USERNAME: "root"
-            MONGO_INITDB_ROOT_PASSWORD: "example"
-            MONGO_INITDB_DATABASE: "app_db"
+            MONGO_INITDB_ROOT_PASSWORD: "1qaz0plm"
+            MONGO_INITDB_DATABASE: "pop"
         ports:
             - "27017:27017"
