@@ -4,6 +4,11 @@ from api import api_bp
 from config import Config
 from extensions import db, jwt
 
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
