@@ -1,8 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
 
-from pop.models.user import User
-from pop.utils.errors import unauthorized, bad_request
+from models.user import User
+from utils.errors import unauthorized, bad_request
 
 bp_auth = Blueprint("auth", __name__, url_prefix="/auth")
 

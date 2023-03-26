@@ -1,8 +1,11 @@
 from flask import request, jsonify
 from flask_jwt_extended import jwt_required
+from flask import Blueprint
 
 from . import api_bp
-from ..models.user import User
+from models.user import User
+
+user_bp = Blueprint('user', __name__)
 
 @api_bp.route('/users', methods=['GET'])
 @jwt_required
