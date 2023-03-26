@@ -1,5 +1,6 @@
 from flask_jwt_extended import JWTManager
-from flask_pymongo import PyMongo
+from flask_mongoengine import MongoEngine
 
-db = PyMongo()
+
+db = MongoEngine()
 jwt = JWTManager()
