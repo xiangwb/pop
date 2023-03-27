@@ -7,13 +7,13 @@ from models.user import User
 
 user_bp = Blueprint('user', __name__,url_prefix="/users")
 
-@user_bp.route('/users', methods=['GET'])
+@user_bp.route('/users',endpoint='user_list', methods=['GET'])
 @jwt_required
 def get_users():
     users = User.objects().exclude('password')
     return jsonify(users), 200
 
-@user_bp.route('/users/<string:user_id>', methods=['GET'])
+@user_bp.route('/users/<string:user_id>', endpoint='user_detail',methods=['GET'])
 @jwt_required
 def get_user(user_id):
     user = User.objects(id=user_id).exclude('password').first()
@@ -21,7 +21,7 @@ def get_user(user_id):
         return jsonify({"msg": "User not found"}), 404
     return jsonify(user), 200
 
-@user_bp.route('/users', methods=['POST'])
+@user_bp.route('/users',endpoint='user_create', methods=['POST'])
 def create_user():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
@@ -33,7 +33,7 @@ def create_user():
     user.save()
     return jsonify(user), 201
 
-@user_bp.route('/users/<string:user_id>', methods=['PUT'])
+@user_bp.route('/users/<string:user_id>',endpoint='user_update', methods=['PUT'])
 @jwt_required
 def update_user(user_id):
     user = User.objects(id=user_id).first()
@@ -48,7 +48,7 @@ def update_user(user_id):
     user.save()
     return jsonify(user), 200
 
-@user_bp.route('/users/<string:user_id>', methods=['DELETE'])
+@user_bp.route('/users/<string:user_id>',endpoint='user_delete', methods=['DELETE'])
 @jwt_required
 def delete_user(user_id):
     user = User.objects(id=user_id).first()
