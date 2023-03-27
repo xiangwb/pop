@@ -5,7 +5,7 @@ from flask import Blueprint
 # from . import api_bp
 from models.user import User
 
-user_bp = Blueprint('user', __name__)
+user_bp = Blueprint('user', __name__,url_prefix="/users")
 
 @user_bp.route('/users', methods=['GET'])
 @jwt_required
