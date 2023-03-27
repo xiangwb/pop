@@ -2,18 +2,18 @@ from flask import request, jsonify
 from flask_jwt_extended import jwt_required
 from flask import Blueprint
 
-from . import api_bp
+# from . import api_bp
 from models.user import User
 
 user_bp = Blueprint('user', __name__)
 
-@api_bp.route('/users', methods=['GET'])
+@user_bp.route('/users', methods=['GET'])
 @jwt_required
 def get_users():
     users = User.objects().exclude('password')
     return jsonify(users), 200
 
-@api_bp.route('/users/<string:user_id>', methods=['GET'])
+@user_bp.route('/users/<string:user_id>', methods=['GET'])
 @jwt_required
 def get_user(user_id):
     user = User.objects(id=user_id).exclude('password').first()
@@ -21,7 +21,7 @@ def get_user(user_id):
         return jsonify({"msg": "User not found"}), 404
     return jsonify(user), 200
 
-@api_bp.route('/users', methods=['POST'])
+@user_bp.route('/users', methods=['POST'])
 def create_user():
     username = request.json.get('username', None)
     password = request.json.get('password', None)
@@ -33,7 +33,7 @@ def create_user():
     user.save()
     return jsonify(user), 201
 
-@api_bp.route('/users/<string:user_id>', methods=['PUT'])
+@user_bp.route('/users/<string:user_id>', methods=['PUT'])
 @jwt_required
 def update_user(user_id):
     user = User.objects(id=user_id).first()
@@ -48,7 +48,7 @@ def update_user(user_id):
     user.save()
     return jsonify(user), 200
 
-@api_bp.route('/users/<string:user_id>', methods=['DELETE'])
+@user_bp.route('/users/<string:user_id>', methods=['DELETE'])
 @jwt_required
 def delete_user(user_id):
     user = User.objects(id=user_id).first()
