@@ -2,10 +2,10 @@ from .base import Config
 
 class ProductionConfig(Config):
     MONGODB_SETTINGS = {
-        'db': 'prod_db',
+        'db': 'pop',
         'host': 'mongodb://mongo:27017',
-        'username': 'prod_user',
-        'password': 'prod_password',
+        'username': 'root',
+        'password': '1qaz0plm',
         'authSource': 'admin',
         'authMechanism': 'SCRAM-SHA-256'
     }

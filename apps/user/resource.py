@@ -1,10 +1,10 @@
 from flask import request, jsonify
 from flask_restful import Resource, Api
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
-from marshmallow import Schema, fields, ValidationError
+from flask_jwt_extended import  jwt_required, get_jwt_identity
+from marshmallow import  ValidationError
 
-from models import User, Role, Permission
-from apps.user.schema.user.user import UserSchema,RoleSchema
+from apps.user.model import User, Role, Permission
+from apps.user.schema import UserSchema,RoleSchema
 
 class RegisterUser(Resource):
     def post(self):
@@ -14,7 +14,7 @@ class RegisterUser(Resource):
             return {'message': str(e)}, 400
 
         user = User(**user_data)
-        user.hash_password()
+        user.set_password(user_data.get('password'))
         user.save()
 
         return {'message': 'User registered successfully'}, 201

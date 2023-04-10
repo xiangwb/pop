@@ -1,12 +1,16 @@
 from marshmallow import Schema, fields, validate
 
+class LoginSchema(Schema):
+    username = fields.String(required=True)
+    password = fields.String(required=True)
+
 class UserSchema(Schema):
     id = fields.String(dump_only=True)
     username = fields.String(required=True, validate=validate.Length(min=3, max=50))
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=validate.Length(min=6, max=50))
-    first_name = fields.String(required=True, validate=validate.Length(min=1, max=50))
-    last_name = fields.String(required=True, validate=validate.Length(min=1, max=50))
+    email = fields.Email(required=True)
+    nickname = fields.String(required=True, validate=validate.Length(min=6, max=50))
 
 
 class RoleSchema(Schema):

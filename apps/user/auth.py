@@ -1,22 +1,25 @@
 from flask import request
 from flask_restful import Resource
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-
-from models.user import User
-from apps.user.schema.auth.auth import LoginSchema
-
 from marshmallow import  ValidationError
+# import pysnooper
+
+from .model import User
+from .schema import LoginSchema
+
+
 
 class LoginUser(Resource):
+    # @pysnooper.snoop(depth=2)
     def post(self):
         try:
             user_data = LoginSchema().load(request.json)
         except ValidationError as e:
             return {'message': str(e)}, 400
 
-        user = User.objects(email=user_data['email']).first()
-        if not user or not user.verify_password(user_data['password']):
-            return {'message': 'Invalid email or password'}, 401
+        user = User.objects(username=user_data['username']).first()
+        if not user or not user.check_password(user_data['password']):
+            return {'message': 'Invalid username or password'}, 401
 
         access_token = create_access_token(identity=str(user.id))
         return {'access_token': access_token}, 200

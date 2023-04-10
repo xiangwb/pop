@@ -10,7 +10,10 @@ class User(db.Document):
     avatar = db.StringField()
     gender = db.StringField(choices=['male', 'female', 'other'])
     birthday = db.DateTimeField()
+    email=db.StringField()
+    phone=db.StringField()
     created_at = db.DateTimeField(default=datetime.utcnow())
+
     
     meta = {
         'indexes': ['username'],
@@ -18,9 +21,9 @@ class User(db.Document):
     }
     
 
-    def save(self, *args, **kwargs):
-        self.password = generate_password_hash(self.password)
-        super(User, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.password = generate_password_hash(self.password)
+    #     super(User, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.username
@@ -29,10 +32,10 @@ class User(db.Document):
         return f'<User {self.username}>'
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password = generate_password_hash(password)
 
     def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+        return check_password_hash(self.password, password)
 
     def to_dict(self):
         return {
