@@ -1,4 +1,4 @@
-import requests
+# import requests
 from .model import SubjectCategory
 from apps.user.model import User
 

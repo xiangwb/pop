@@ -5,3 +5,7 @@ Werkzeug==2.2.3
 flask-restful
 marshmallow==3.19.0
 pysnooper
+apispec[yaml]
+apispec-webframeworks
+blinker==1.4
+Flask-Caching

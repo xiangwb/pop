@@ -6,14 +6,14 @@ from flask_restful import Resource
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 import mongoengine as mg
 
-from .utils import get_next_item_id
+from apps.course.utils import get_next_item_id
 from commons.pagination import Pagination
 from extensions import logger
-from .model import SubjectCategory, Subject, Point, Item, PointRelation
-from .schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema, PointRelationSchema, \
+from apps.course.model import SubjectCategory, Subject, Point, Item, PointRelation
+from apps.course.schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema, PointRelationSchema, \
     StudyItemSchema
 from utils.response import format_response
-from .adapter import get_parent_category_name, get_user
+from apps.course.adapter import get_parent_category_name, get_user
 from extensions import logger
 
 # log = get_logger('bubble', 'bubble')
