@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 
 import os
 import sys
@@ -18,6 +19,8 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     jwt.init_app(app)
+
+    cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     app.register_blueprint(user_blueprint,url_prefix='/api/v1/users')
     app.register_blueprint(course_blueprint,url_prefix='/api/v1/courses')

@@ -12,7 +12,7 @@ from extensions import logger
 from apps.course.model import SubjectCategory, Subject, Point, Item, PointRelation
 from apps.course.schema import SubjectCategorySchema, SubjectSchema, ItemSchema, PointSchema, PointRelationSchema, \
     StudyItemSchema
-from utils.response import format_response
+from commons.response import format_response
 from apps.course.adapter import get_parent_category_name, get_user
 from extensions import logger
 

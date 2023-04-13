@@ -9,3 +9,4 @@ apispec[yaml]
 apispec-webframeworks
 blinker==1.4
 Flask-Caching
+flask-cors

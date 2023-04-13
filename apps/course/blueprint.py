@@ -6,7 +6,7 @@ from extensions import apispec
 from .resource import SubjectCategoryListResource, SubjectCategoryResource, SubjectResource, \
     SubjectListResource, CategorySubjectResource, ItemResource, ItemListResource, PointResource, ItemGetterResource, \
     PointRelationListResource, PointRelationGraphResource
-from .schema import SubjectCategorySchema
+# from .schema import SubjectCategorySchema
 
 course_blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
 api = Api(course_blueprint)
@@ -24,11 +24,11 @@ api.add_resource(PointRelationGraphResource, '/points/graph/')
 api.add_resource(ItemGetterResource, "/items/pop/")
 
 
-@course_blueprint.before_app_first_request
-def register_views():
-    apispec.spec.components.schema("SubjectCategorySchema", schema=SubjectCategorySchema)
-    apispec.spec.path(view=SubjectCategoryResource, app=current_app)
-    apispec.spec.path(view=SubjectCategoryListResource, app=current_app)
+# @course_blueprint.before_app_first_request
+# def register_views():
+#     apispec.spec.components.schema("SubjectCategorySchema", schema=SubjectCategorySchema)
+#     apispec.spec.path(view=SubjectCategoryResource, app=current_app)
+#     apispec.spec.path(view=SubjectCategoryListResource, app=current_app)
 
 
 @course_blueprint.errorhandler(ValidationError)
