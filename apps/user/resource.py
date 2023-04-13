@@ -3,21 +3,24 @@ from flask_restful import Resource, Api
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 from marshmallow import  ValidationError
 
+from commons.response import format_response
 from apps.user.model import User, Role, Permission
-from apps.user.schema import UserSchema,RoleSchema
+from apps.user.schema import EmailUserSchema,RoleSchema,UserProflieSchema
 
 class RegisterUser(Resource):
     def post(self):
         try:
-            user_data = UserSchema().load(request.json)
+            user_data = EmailUserSchema().load(request.json)
         except ValidationError as e:
-            return {'message': str(e)}, 400
+            # return {'message': str(e)}, 400
+            return format_response('',str(e),400)
 
         user = User(**user_data)
         user.set_password(user_data.get('password'))
         user.save()
 
-        return {'message': 'User registered successfully'}, 201
+        # return {'message': 'User registered successfully'}, 201
+        return format_response('','User registered successfully',201)
     
 
 class UserProfile(Resource):
@@ -25,7 +28,9 @@ class UserProfile(Resource):
     def get(self):
         user_id = get_jwt_identity()
         user = User.objects(id=user_id).first()
-        return jsonify(user), 200
+        # return jsonify(user), 200
+        data = UserProflieSchema.dump(user)
+        return format_response(data,'Get user infomation successfully')
 
     @jwt_required()
     def put(self):
@@ -33,15 +38,17 @@ class UserProfile(Resource):
         user = User.objects(id=user_id).first()
 
         try:
-            user_data = UserSchema().load(request.json)
+            user_data = EmailUserSchema().load(request.json)
         except ValidationError as e:
-            return {'message': str(e)}, 400
+            # return {'message': str(e)}, 400
+            return format_response('',str(e),400)
 
         user.email = user_data['email']
         user.hash_password(user_data['password'])
         user.save()
 
-        return {'message': 'User profile updated successfully'}, 200
+        # return {'message': 'User profile updated successfully'}, 200
+        return format_response('','User profile updated successfully',200)
 
 class UserPassword(Resource):
     @jwt_required()
@@ -50,14 +57,15 @@ class UserPassword(Resource):
         user = User.objects(id=user_id).first()
 
         try:
-            user_data = UserSchema().load(request.json)
+            user_data = EmailUserSchema().load(request.json)
         except ValidationError as e:
-            return {'message': str(e)}, 400
+            return format_response('',str(e),400)
 
         user.hash_password(user_data['password'])
         user.save()
 
-        return {'message': 'User password updated successfully'}, 200
+        # return {'message': 'User password updated successfully'}, 200
+        return format_response('','User password updated successfully',200)
 
 class UserRecords(Resource):
     @jwt_required()
