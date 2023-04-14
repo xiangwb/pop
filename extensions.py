@@ -25,3 +25,7 @@ def handle_expired_token():
 @jwt.invalid_token_loader
 def handle_invalid_token():
     return format_response('',{'msg': 'Invalid token'}, 401)
+
+@jwt.unauthorized_loader
+def handle_no_auth_error(error):
+    return format_response('','Missing Authorization Header',401)

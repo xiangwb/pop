@@ -1,5 +1,6 @@
 from flask import request, jsonify
-from flask_restful import Resource, Api
+from flask_restful import Resource
+from mongoengine.errors import NotUniqueError
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 from marshmallow import  ValidationError
 
@@ -14,10 +15,14 @@ class RegisterUser(Resource):
         except ValidationError as e:
             # return {'message': str(e)}, 400
             return format_response('',str(e),400)
-
-        user = User(**user_data)
-        user.set_password(user_data.get('password'))
-        user.save()
+        try:
+            user = User(**user_data)
+            user.set_password(user_data.get('password'))
+            user.save()
+        except NotUniqueError as e:
+            return format_response('','user exists',400)
+        except:
+            return format_response('','database error',400)
 
         # return {'message': 'User registered successfully'}, 201
         return format_response('','User registered successfully',201)
@@ -29,8 +34,9 @@ class UserProfile(Resource):
         user_id = get_jwt_identity()
         user = User.objects(id=user_id).first()
         # return jsonify(user), 200
-        data = UserProflieSchema.dump(user)
-        return format_response(data,'Get user infomation successfully')
+        schema = UserProflieSchema()
+        data = schema.dump(user)
+        return format_response(data,'Get user infomation successfully',200)
 
     @jwt_required()
     def put(self):
