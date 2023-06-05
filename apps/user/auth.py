@@ -26,7 +26,7 @@ class LoginUser(Resource):
 
         access_token = create_access_token(identity=str(user.id))
         # return {'access_token': access_token}, 200
-        return format_response({'access_token': access_token},'login success',200)
+        return format_response({'access_token': access_token,'id':str(user.id)},'login success',200)
 
 class LogoutUser(Resource):
     @jwt_required()

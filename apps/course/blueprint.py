@@ -4,8 +4,8 @@ from marshmallow import ValidationError
 
 from extensions import apispec
 from .resource import SubjectCategoryListResource, SubjectCategoryResource, SubjectResource, \
-    SubjectListResource, CategorySubjectResource, ItemResource, ItemListResource, PointResource, ItemGetterResource, \
-    PointRelationListResource, PointRelationGraphResource
+    SubjectListResource, CategorySubjectResource, ItemResource, ItemListResource, PointListResource, ItemGetterResource, \
+    PointRelationListResource, PointRelationGraphResource,PointResource,PointRelationResource,ChatResource
 # from .schema import SubjectCategorySchema
 
 course_blueprint = Blueprint("api", __name__, url_prefix="/api/v1/bubble")
@@ -16,12 +16,15 @@ api.add_resource(SubjectCategoryListResource, "/categories/")
 api.add_resource(CategorySubjectResource, "/categories/<string:_id>/subjects/")
 api.add_resource(SubjectResource, "/subjects/<string:_id>/")
 api.add_resource(SubjectListResource, "/subjects/")
-api.add_resource(PointRelationListResource, "/points/relations/")
+api.add_resource(PointRelationListResource, "/points/relation/")
+api.add_resource(PointRelationResource, "/points/relation/<string:_id>/")
 api.add_resource(ItemResource, "/items/<string:_id>/")
 api.add_resource(ItemListResource, "/items/")
-api.add_resource(PointResource, '/points/')
+api.add_resource(PointListResource, '/points/')
+api.add_resource(PointResource, '/points/<string:_id>/')
 api.add_resource(PointRelationGraphResource, '/points/graph/')
 api.add_resource(ItemGetterResource, "/items/pop/")
+api.add_resource(ChatResource,"/chat/")
 
 
 # @course_blueprint.before_app_first_request

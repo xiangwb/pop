@@ -16,9 +16,39 @@ class EmailUserSchema(Schema):
 class UserProflieSchema(Schema):
     id = fields.String(dump_only=True)
     # username = fields.String(required=True, validate=validate.Length(min=3, max=50))
+    username = fields.String(required=True, unique=True)
+    # password = fields.String(required=True)
     nickname = fields.String(required=True)
-    avatar = fields.String(required=True)
-    gender = fields.String(required=True)
+    avatar = fields.String()
+    gender = fields.String(choices=['male', 'female', 'other'],required=True)
+    birthday = fields.DateTime()
+    email=fields.String(required=True)
+    phone=fields.String(required=True)
+
+class UserProflieListSchema(Schema):
+    id =fields.String(dump_only=True)
+    username = fields.String(required=True, unique=True)
+    # password = fields.String(required=True)
+    nickname = fields.String(required=True)
+    avatar = fields.String()
+    gender = fields.String(choices=['male', 'female', 'other'])
+    birthday = fields.DateTime()
+    email=fields.String()
+    phone=fields.String()
+    created_at = fields.DateTime(ump_only=True)
+
+class UserProflieCreateSchema(Schema):
+    id =fields.String(dump_only=True)
+    username = fields.String(required=True, unique=True)
+    # password = fields.String(required=True)
+    nickname = fields.String(required=True)
+    avatar = fields.String()
+    gender = fields.String(choices=['male', 'female', 'other'],required=True)
+    birthday = fields.DateTime()
+    email=fields.String(required=True)
+    phone=fields.String(required=True)
+    password=fields.String(required=True)
+    repeat_password=fields.String(required=True)
    
 
 

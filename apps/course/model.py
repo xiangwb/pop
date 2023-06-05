@@ -46,6 +46,7 @@ class Subject(db.Document):
     name = mg.StringField(required=True, max_length=100, unique=True)
     creator_id = mg.StringField(required=True)
     category_ids = mg.ListField(mg.StringField())
+    cover = mg.StringField(required=False)
     desc = mg.StringField(required=True)
 
     def __repr__(self):
@@ -81,16 +82,16 @@ class Item(db.Document):
 
     question = mg.StringField(required=True)
     answer = mg.StringField(required=False)
-    refer = mg.StringField(required=True)
+    refer = mg.StringField()
     point_id = mg.StringField(required=True)
-    point_name = mg.StringField(required=True)
+    # point_name = mg.StringField(required=True)
     related_point_ids = mg.ListField(mg.StringField())
-    related_point_names = mg.ListField(mg.StringField())
+    # related_point_names = mg.ListField(mg.StringField())
     subject_id = mg.StringField(required=True)
-    subject_name = mg.StringField(required=True)
+    # subject_name = mg.StringField(required=True)
     item_type = mg.StringField(required=True, choices=['theory', 'application', 'general_knowledge'])
     creator_id = mg.StringField(required=True)
-    creator_name = mg.StringField(required=True)
+    # creator_name = mg.StringField(required=True)
     sequence = mg.IntField(min_value=1, default=1)
 
     # __searchable__ = ['username', 'email']  # 定义需要es搜索的字段，不定义则不需要es搜索功能

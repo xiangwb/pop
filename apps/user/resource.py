@@ -1,12 +1,13 @@
 from flask import request, jsonify
 from flask_restful import Resource
-from mongoengine.errors import NotUniqueError
+from mongoengine.errors import NotUniqueError,ValidationError as MongoValidationError
 from flask_jwt_extended import  jwt_required, get_jwt_identity
 from marshmallow import  ValidationError
+import pysnooper
 
 from commons.response import format_response
 from apps.user.model import User, Role, Permission
-from apps.user.schema import EmailUserSchema,RoleSchema,UserProflieSchema
+from apps.user.schema import EmailUserSchema,RoleSchema, UserProflieCreateSchema,UserProflieSchema,UserProflieListSchema
 
 class RegisterUser(Resource):
     def post(self):
@@ -28,50 +29,105 @@ class RegisterUser(Resource):
         return format_response('','User registered successfully',201)
     
 
-class UserProfile(Resource):
+class UserById(Resource):
     @jwt_required()
-    def get(self):
-        user_id = get_jwt_identity()
-        user = User.objects(id=user_id).first()
-        # return jsonify(user), 200
-        schema = UserProflieSchema()
-        data = schema.dump(user)
-        return format_response(data,'Get user infomation successfully',200)
+    def get(self,user_id):
+        try:
+            # user_id = get_jwt_identity()
+            user = User.objects(id=user_id).first()
+            # return jsonify(user), 200
+            schema = UserProflieSchema()
+            data = schema.dump(user)
+            return format_response(data,'Get user infomation successfully',200)
+        except:
+            return format_response('','server error',500)
+
 
     @jwt_required()
-    def put(self):
-        user_id = get_jwt_identity()
+    def put(self,user_id):
+        try:
+            # user_id = get_jwt_identity()
+            user = User.objects(id=user_id).first()
+
+            try:
+                user_data = UserProflieSchema().load(request.json)
+            except ValidationError as e:
+                # return {'message': str(e)}, 400
+                return format_response('',str(e),400)
+
+            user.update(**user_data)
+            # user.hash_password(user_data['password'])
+            user.save()
+
+            # return {'message': 'User profile updated successfully'}, 200
+            return format_response('','User profile updated successfully',200)
+        except MongoValidationError as e:
+            format_response('',str(e),400)
+        except:
+            return format_response('','server error',500)
+
+class ChangePassword(Resource):
+    @jwt_required()
+    def post(self,user_id):
+        # user_id = get_jwt_identity()
         user = User.objects(id=user_id).first()
+
+        if not user:
+            return format_response('','Invalid user_id',401)
 
         try:
-            user_data = EmailUserSchema().load(request.json)
+            data = request.json
         except ValidationError as e:
             # return {'message': str(e)}, 400
             return format_response('',str(e),400)
 
-        user.email = user_data['email']
-        user.hash_password(user_data['password'])
-        user.save()
+        old_password = data.pop('old_password')
+        if  not user.check_password(old_password):
+            # return {'message': 'Invalid username or password'}, 401
+            return format_response('','Invalid  password',401)
+
+        new_password = data.pop('new_password')
+        repeat_new_password = data.pop('repeat_new_password')
+        if new_password != repeat_new_password:
+            return format_response('',"password doesn't match",400)
+
+        user.set_password(new_password)
+        # user.hash_password(user_data['password'])
+        user.update(password=user.password)
 
         # return {'message': 'User profile updated successfully'}, 200
-        return format_response('','User profile updated successfully',200)
-
-class UserPassword(Resource):
+        return format_response('','password updated successfully',200)
+    
+class UserList(Resource):
     @jwt_required()
-    def put(self):
-        user_id = get_jwt_identity()
-        user = User.objects(id=user_id).first()
-
+    def get(self):
+        user = User.objects.all()
+        # return jsonify(user), 200
+        schema = UserProflieListSchema(many=True)
+        data = schema.dump(user)
+        return format_response(data,'Get user List successfully',200)
+    
+    @jwt_required()
+    @pysnooper.snoop()
+    def post(self):
         try:
-            user_data = EmailUserSchema().load(request.json)
-        except ValidationError as e:
-            return format_response('',str(e),400)
+            user_data = UserProflieCreateSchema().load(request.json)
+            password=user_data.pop('password')
+            repeat_password=user_data.pop('repeat_password')
+            if password!=repeat_password:
+                return format_response("password didn't match",'两次输入的密码不一致',400)
+            user = User(**user_data)
+            user.set_password(password=password)
+            user.save()
+        except NotUniqueError as e:
+            return format_response('','user exists',400)
+        except:
+            return format_response('','database error',400)
 
-        user.hash_password(user_data['password'])
-        user.save()
+        # return {'message': 'User registered successfully'}, 201
+        return format_response('','User add successfully',201)
 
-        # return {'message': 'User password updated successfully'}, 200
-        return format_response('','User password updated successfully',200)
+
 
 class UserRecords(Resource):
     @jwt_required()
