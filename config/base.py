@@ -15,5 +15,5 @@ class Config:
     }
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY', 'default_jwt_secret_key')
     JWT_ACCESS_TOKEN_EXPIRES = int(os.environ.get('JWT_ACCESS_TOKEN_EXPIRES', 3600))
-    API2D_API_KEY=os.environ.get('API2D_API_KEY','fk206231-Hdf0mEt1LOMdUXxgSzFzUH0IuwKTCwii')
+    API2D_API_KEY=os.environ.get('API2D_API_KEY','default')
  
