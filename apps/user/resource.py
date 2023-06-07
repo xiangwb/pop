@@ -10,6 +10,7 @@ from apps.user.model import User, Role, Permission
 from apps.user.schema import EmailUserSchema,RoleSchema, UserProflieCreateSchema,UserProflieSchema,UserProflieListSchema
 
 class RegisterUser(Resource):
+    @pysnooper.snoop(max_variable_length=1000)
     def post(self):
         try:
             user_data = EmailUserSchema().load(request.json)
