@@ -11,3 +11,4 @@ blinker==1.4
 Flask-Caching
 flask-cors
 python-dotenv
+requests
