@@ -15,6 +15,19 @@ from apps.Carousel.blueprint import carousel_blueprint
 from commons.handler import error_handler,log_request_info
 
 
+# 打开隐藏文件
+with open('.env', 'r') as f:
+    # 逐行读取文件内容
+    for line in f:
+        # 忽略以 # 开头的注释行
+        if not line.startswith('#'):
+            # 按照等号分隔键值对
+            key, value = line.strip().split('=', 1)
+            # 设置系统环境变量
+            os.environ[key] = value
+
+
+
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)

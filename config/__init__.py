@@ -1,4 +1,7 @@
-# from .base import *
-# from .development import *
-from .production import *
+import os
+
+if os.environ.get('DEBUG'):
+    from .development import *
+else:
+    from .production import *
 # from .test import *

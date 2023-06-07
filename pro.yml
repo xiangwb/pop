@@ -1,0 +1,26 @@
+version: "3"
+services:
+    web:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "0.0.0.0:5000:5000"
+        # environment:
+        #     FLASK_APP: "run.py"
+        #     FLASK_DEBUG: 0
+        #     MONGODB_HOST: "mongo"
+        #     JWT_SECRET_KEY: "1qaz2wsx3edc4rfv5tgb"
+        #     JWT_ACCESS_TOKEN_EXPIRES: "3600"
+        # volumes:
+        #     - .:/app
+    #     depends_on:
+    #         - mongo
+    # mongo:
+    #     image: mongo:4.4
+    #     environment:
+    #         MONGO_INITDB_ROOT_USERNAME: "root"
+    #         MONGO_INITDB_ROOT_PASSWORD: "1qaz0plm"
+    #         MONGO_INITDB_DATABASE: "pop"
+    #     ports:
+    #         - "27117:27017"
