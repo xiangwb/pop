@@ -29,6 +29,12 @@ with open('.env', 'r') as f:
 
 
 def create_app(config_class=Config):
+    class_vars = vars(config_class)
+
+# 遍历命名空间并打印类变量的名称和值
+    for var_name, var_value in class_vars.items():
+        if not var_name.startswith('__') and not callable(var_value):
+            print(f"{var_name}: {var_value}")
     app = Flask(__name__)
     app.config.from_object(config_class)
 
